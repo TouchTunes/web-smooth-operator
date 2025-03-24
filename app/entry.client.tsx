@@ -4,16 +4,16 @@
  * For more information, see https://remix.run/file-conventions/entry.client
  */
 
-import { useMemo, useState } from "react";
-import { CacheProvider } from "@emotion/react";
-import CssBaseline from "@mui/material/CssBaseline";
-import { ThemeProvider } from "@mui/material/styles";
-import { RemixBrowser } from "@remix-run/react";
-import { hydrateRoot } from "react-dom/client";
+import { CacheProvider } from '@emotion/react';
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
+import { RemixBrowser } from '@remix-run/react';
+import { useMemo, useState } from 'react';
+import { hydrateRoot } from 'react-dom/client';
 
-import theme from "./theme";
-import ClientStyleContext from "./ClientStyleContext";
-import createEmotionCache from "./createEmotionCache";
+import ClientStyleContext from './ClientStyleContext';
+import createEmotionCache from './createEmotionCache';
+import theme from './theme';
 
 interface ClientCacheProviderProps {
   children: React.ReactNode;
@@ -28,7 +28,7 @@ function ClientCacheProvider({ children }: ClientCacheProviderProps) {
         setCache(createEmotionCache());
       },
     }),
-    []
+    [],
   );
 
   return (
@@ -47,7 +47,7 @@ const hydrateFn = () => {
         <CssBaseline />
         <RemixBrowser />
       </ThemeProvider>
-    </ClientCacheProvider>
+    </ClientCacheProvider>,
   );
 };
 

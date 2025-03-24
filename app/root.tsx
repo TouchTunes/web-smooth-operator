@@ -1,6 +1,7 @@
-import { Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react";
-import { ThemeProvider, CssBaseline } from "@mui/material";
-import theme from "./theme";
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import { Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
+
+import theme from './theme';
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (

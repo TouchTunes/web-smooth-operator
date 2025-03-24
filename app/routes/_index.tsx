@@ -1,16 +1,17 @@
-import { Container, Typography } from "@mui/material";
-import type { MetaFunction } from "@remix-run/node";
+import { Container, Typography } from '@mui/material';
+
+import type { MetaFunction } from '@remix-run/node';
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "Smooth Operator" },
-    { name: "description", content: "Welcome to Remix!" },
+    { title: 'Smooth Operator' },
+    { name: 'description', content: 'Welcome to Remix!' },
   ];
 };
 
 export default function Index() {
   return (
-    <Container maxWidth="md" sx={{ textAlign: "center", mt: 8 }}>
+    <Container maxWidth="md" sx={{ textAlign: 'center', mt: 8 }}>
       <Typography variant="h3" gutterBottom>
         Welcome to Smooth Operator
       </Typography>
