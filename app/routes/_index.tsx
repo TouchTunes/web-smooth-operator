@@ -1,6 +1,5 @@
-import { Container, Typography } from '@mui/material';
-
-import type { MetaFunction } from '@remix-run/node';
+import { type MetaFunction } from '@remix-run/node';
+import { redirect } from '@remix-run/react';
 
 export const meta: MetaFunction = () => {
   return [
@@ -9,15 +8,6 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export default function Index() {
-  return (
-    <Container maxWidth="md" sx={{ textAlign: 'center', mt: 8 }}>
-      <Typography variant="h3" gutterBottom>
-        Welcome to Smooth Operator
-      </Typography>
-      <Typography variant="body1" color="text.secondary" gutterBottom>
-        One place to rule over your ever growing fleet of devices
-      </Typography>
-    </Container>
-  );
+export function loader() {
+  return redirect('/dashboard');
 }
