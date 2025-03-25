@@ -1,3 +1,4 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import BackupTableIcon from '@mui/icons-material/BackupTable';
@@ -7,6 +8,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import {
   AppBar,
   Box,
+  Button,
   Container,
   CssBaseline,
   Divider,
@@ -17,6 +19,7 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Stack,
   Toolbar,
   Typography,
 } from '@mui/material';
@@ -56,6 +59,15 @@ const PAGES = [
 
 function Layout() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const {
+    loginWithRedirect,
+    user,
+    isAuthenticated,
+    isLoading: isAuthLoading,
+    logout,
+  } = useAuth0();
+  console.log(isAuthenticated);
+  console.log(user);
 
   const toggleDrawer = () => {
     setIsDrawerOpen((previousState) => !previousState);
@@ -70,12 +82,35 @@ function Layout() {
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
         <Toolbar variant="dense">
-          <IconButton edge="start" color="inherit" onClick={toggleDrawer}>
-            {isDrawerOpen ? <ChevronLeftIcon /> : <MenuIcon />}
-          </IconButton>
-          <Typography variant="h6" noWrap sx={{ ml: 2 }}>
-            TouchTunes Smooth Operator
-          </Typography>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            sx={{ width: '100%' }}
+          >
+            <>
+              <IconButton edge="start" color="inherit" onClick={toggleDrawer}>
+                {isDrawerOpen ? <ChevronLeftIcon /> : <MenuIcon />}
+              </IconButton>
+              <Typography variant="h6" noWrap sx={{ ml: 2 }}>
+                TouchTunes Smooth Operator
+              </Typography>
+            </>
+            <Box>
+              <Button onClick={() => loginWithRedirect()}>Login</Button>
+              <Button
+                onClick={() =>
+                  logout({
+                    logoutParams: {
+                      returnTo: 'http://localhost:5173/api/auth0callback',
+                    },
+                  })
+                }
+              >
+                Logout
+              </Button>
+            </Box>
+          </Stack>
         </Toolbar>
       </AppBar>
 

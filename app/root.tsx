@@ -1,3 +1,4 @@
+import { Auth0Provider } from '@auth0/auth0-react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import {
   Links,
@@ -37,7 +38,15 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Outlet />
+      <Auth0Provider
+        domain="dev--d6f2kxp.us.auth0.com"
+        clientId="aYmWlr6lBk2wMUkKNWm19nKAEeF47bWZ"
+        authorizationParams={{
+          redirect_uri: 'http://localhost:5173/api/auth0callback',
+        }}
+      >
+        <Outlet />
+      </Auth0Provider>
     </ThemeProvider>
   );
 }
