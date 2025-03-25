@@ -47,7 +47,7 @@ function Layout() {
       >
         <Toolbar variant="dense">
           <IconButton edge="start" color="inherit" onClick={toggleDrawer}>
-            <MenuIcon />
+            {isDrawerOpen ? <ChevronLeftIcon /> : <MenuIcon />}
           </IconButton>
           <Typography variant="h6" noWrap sx={{ ml: 2 }}>
             TouchTunes Smooth Operator
@@ -72,15 +72,9 @@ function Layout() {
           },
         }}
       >
-        <Toolbar>
-          <IconButton onClick={toggleDrawer}>
-            {isDrawerOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-          </IconButton>
-        </Toolbar>
-        <Divider />
-        <List>
+        <List sx={{ mt: 6 }}>
           {['Reports', 'Operators'].map((text, index) => (
-            <ListItem key={index} disablePadding>
+            <ListItem key={text} disablePadding>
               <ListItemButton
                 component={Link}
                 to={`/${text.toLowerCase()}`}
