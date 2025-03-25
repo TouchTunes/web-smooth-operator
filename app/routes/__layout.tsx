@@ -5,6 +5,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import {
   AppBar,
   Box,
+  Container,
   CssBaseline,
   Divider,
   Drawer,
@@ -94,9 +95,9 @@ function Layout() {
         <Divider />
       </Drawer>
 
-      <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 6 }}>
+      <Container maxWidth="lg" sx={{ flexGrow: 1, p: 3, mt: 6 }}>
         <Outlet />
-      </Box>
+      </Container>
     </Box>
   );
 }

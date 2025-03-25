@@ -1,12 +1,12 @@
-import { Avatar, Container, Stack, Typography } from '@mui/material';
+import { Avatar, Stack, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { useFetcher, useLoaderData } from '@remix-run/react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { getOperators } from '~/src/components/services/operators.service';
+import { getOperators } from '~/src/services/operators.service';
 
 import type { GridColDef } from '@mui/x-data-grid';
-import type { Operator } from '~/src/components/services/operators.service';
+import type { Operator } from '~/src/services/operators.service';
 
 export async function loader() {
   try {
@@ -61,22 +61,20 @@ export default function Operators() {
   ];
 
   return (
-    <Container maxWidth="lg">
-      <DataGrid
-        rows={operators || []}
-        columns={columns}
-        loading={isLoading}
-        getRowId={() => uuidv4()}
-        disableRowSelectionOnClick
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 10,
-            },
+    <DataGrid
+      rows={operators || []}
+      columns={columns}
+      loading={isLoading}
+      getRowId={() => uuidv4()}
+      disableRowSelectionOnClick
+      initialState={{
+        pagination: {
+          paginationModel: {
+            pageSize: 10,
           },
-        }}
-        pageSizeOptions={[5]}
-      />
-    </Container>
+        },
+      }}
+      pageSizeOptions={[5]}
+    />
   );
 }
