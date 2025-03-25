@@ -1,6 +1,8 @@
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import AssessmentIcon from '@mui/icons-material/Assessment';
+import BackupTableIcon from '@mui/icons-material/BackupTable';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
   AppBar,
@@ -29,6 +31,28 @@ export const meta: MetaFunction = () => {
 
 const DRAWER_WIDTH = 240;
 const DRAWER_WIDTH_CLOSED = 64;
+
+const PAGES = [
+  { value: 0, icon: <AssessmentIcon />, url: '/', name: 'Reports' },
+  {
+    value: 1,
+    icon: <AccountBoxIcon />,
+    url: '/operators',
+    name: 'Data Fetching',
+  },
+  {
+    value: 2,
+    icon: <BackupTableIcon />,
+    url: '/remix-form',
+    name: 'Form Submission',
+  },
+  {
+    value: 3,
+    icon: <ErrorOutlineIcon />,
+    url: '/error-boundary',
+    name: 'Error Boundary',
+  },
+];
 
 function Layout() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -73,11 +97,12 @@ function Layout() {
         }}
       >
         <List sx={{ mt: 6 }}>
-          {['Reports', 'Operators'].map((text, index) => (
-            <ListItem key={text} disablePadding>
+          {PAGES.map((page, index) => (
+            <ListItem key={page.value} disablePadding>
               <ListItemButton
                 component={Link}
-                to={`/${text.toLowerCase()}`}
+                to={PAGES.find((page) => page.value === index)?.url || '/'}
+                onClick={toggleDrawer}
                 sx={{
                   minHeight: 48,
                   justifyContent: isDrawerOpen ? 'initial' : 'center',
@@ -85,9 +110,11 @@ function Layout() {
                 }}
               >
                 <ListItemIcon sx={{ minWidth: 0, justifyContent: 'center' }}>
-                  {index % 2 === 0 ? <AssessmentIcon /> : <AccountBoxIcon />}
+                  {page.icon}
                 </ListItemIcon>
-                {isDrawerOpen && <ListItemText primary={text} sx={{ ml: 2 }} />}
+                {isDrawerOpen && (
+                  <ListItemText primary={page.name} sx={{ ml: 2 }} />
+                )}
               </ListItemButton>
             </ListItem>
           ))}

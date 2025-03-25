@@ -23,7 +23,7 @@ export async function loader() {
   }
 }
 
-export default function Operators() {
+export default function RemixFormSubmission() {
   const { operators } = useLoaderData<typeof loader>();
   const { state } = useFetcher<typeof loader>();
   const isLoading = state !== 'idle';
