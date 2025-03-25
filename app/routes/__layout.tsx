@@ -1,9 +1,14 @@
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import AssessmentIcon from '@mui/icons-material/Assessment';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import MenuIcon from '@mui/icons-material/Menu';
 import {
+  AppBar,
   Box,
   Divider,
   Drawer,
+  IconButton,
   List,
   ListItem,
   ListItemButton,
@@ -12,6 +17,7 @@ import {
   Toolbar,
 } from '@mui/material';
 import { Link, Outlet } from '@remix-run/react';
+import { useState } from 'react';
 
 import type { MetaFunction } from '@remix-run/react';
 
@@ -20,21 +26,33 @@ export const meta: MetaFunction = () => {
 };
 
 function Layout() {
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const toggleDrawer = () => () => {
+    setIsDrawerOpen((previousState) => !previousState);
+  };
+
   return (
     <>
+      <AppBar position="static">
+        <Toolbar variant="dense">
+          <IconButton edge="start" color="inherit" onClick={toggleDrawer()}>
+            <MenuIcon />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+
       <Drawer
-        sx={{
-          width: 250,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: 250,
-            boxSizing: 'border-box',
-          },
-        }}
-        variant="permanent"
         anchor="left"
+        open={isDrawerOpen}
+        onClose={toggleDrawer()}
+        PaperProps={{ sx: { width: 250 } }}
       >
-        <Toolbar>Smooth Operator</Toolbar>
+        <Box>
+          <IconButton onClick={toggleDrawer()}>
+            {isDrawerOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+          </IconButton>
+        </Box>
         <Divider />
         <List>
           {['Reports', 'Operators'].map((text, index) => (
@@ -54,7 +72,7 @@ function Layout() {
         <Divider />
       </Drawer>
 
-      <Box sx={{ mt: 8, p: 2 }}>
+      <Box sx={{ mt: 2, p: 2 }}>
         <Outlet />
       </Box>
     </>

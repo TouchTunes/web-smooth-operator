@@ -2,7 +2,7 @@ import { Container, Typography } from '@mui/material';
 
 export default function Index() {
   return (
-    <Container maxWidth="md" sx={{ textAlign: 'center', mt: 8 }}>
+    <Container maxWidth="lg">
       <Typography variant="h3" gutterBottom>
         Welcome to Smooth Operator!
       </Typography>

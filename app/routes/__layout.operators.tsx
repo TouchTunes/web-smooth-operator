@@ -61,7 +61,7 @@ export default function Operators() {
   ];
 
   return (
-    <Container maxWidth="md" sx={{ textAlign: 'center', mt: 8 }}>
+    <Container maxWidth="lg">
       <DataGrid
         rows={operators || []}
         columns={columns}
