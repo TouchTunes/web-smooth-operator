@@ -1,7 +1,6 @@
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
   AppBar,
@@ -56,7 +55,7 @@ function Layout() {
       </AppBar>
 
       <Drawer
-        variant="permanent"
+        onClose={toggleDrawer}
         open={isDrawerOpen}
         sx={{
           width: isDrawerOpen ? DRAWER_WIDTH : DRAWER_WIDTH_CLOSED,
