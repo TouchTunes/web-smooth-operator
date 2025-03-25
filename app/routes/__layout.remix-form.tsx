@@ -4,12 +4,13 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Snackbar,
   Stack,
   TextField,
   Typography,
 } from '@mui/material';
 import { useFetcher } from '@remix-run/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import type { SelectChangeEvent } from '@mui/material';
@@ -41,8 +42,15 @@ export async function action({ request }: ActionFunctionArgs) {
 
 const RemixForm = () => {
   const [role, setRole] = useState('');
-  const { Form, state } = useFetcher<typeof action>();
+  const [isToastOpen, setIsToastOpen] = useState(false);
+  const { Form, state, data } = useFetcher<typeof action>();
   const isSubmitting = state !== 'idle';
+
+  useEffect(() => {
+    if (data?.success) {
+      setIsToastOpen((previousState) => !previousState);
+    }
+  }, [data]);
 
   return (
     <Stack direction="row" justifyContent="center">
@@ -91,6 +99,13 @@ const RemixForm = () => {
           </LoadingButton>
         </Stack>
       </Form>
+
+      <Snackbar
+        open={isToastOpen}
+        autoHideDuration={3000}
+        onClose={() => setIsToastOpen((previousState) => !previousState)}
+        message="All good, governor!"
+      />
     </Stack>
   );
 };
