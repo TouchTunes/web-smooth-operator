@@ -1,90 +1,98 @@
-import { Alert, Avatar, Stack, Typography } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
-import { useFetcher, useLoaderData } from '@remix-run/react';
+import { LoadingButton } from '@mui/lab';
+import {
+  Box,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
+import { useFetcher } from '@remix-run/react';
+import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { getOperators } from '~/src/services/operators.service';
+import type { SelectChangeEvent } from '@mui/material';
+import type { ActionFunctionArgs } from '@remix-run/node';
 
-import type { GridColDef } from '@mui/x-data-grid';
-import type { Operator } from '~/src/services/operators.service';
+const ROLES = [
+  { id: uuidv4(), label: 'Administrator' },
+  { id: uuidv4(), label: 'Reader' },
+  { id: uuidv4(), label: 'Creator' },
+];
 
-export async function loader() {
+export async function action({ request }: ActionFunctionArgs) {
+  const formData = await request.formData();
+  const { fullName, secretKey, role } = Object.fromEntries(formData);
+  console.log(fullName);
+  console.log(secretKey);
+  console.log(role);
+
   try {
-    const operators = await getOperators();
-    return {
-      operators,
-      error: null,
-    };
-  } catch (error: unknown) {
-    return {
-      operators: null,
-      error,
-    };
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+  } catch (error) {
+    console.log(error);
+    return null;
   }
+
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+  return { success: true, message: '' };
 }
 
-export default function RemixFormSubmission() {
-  const { operators } = useLoaderData<typeof loader>();
-  const { state } = useFetcher<typeof loader>();
-  const isLoading = state !== 'idle';
-  const getOperatorName = (operator: Operator) =>
-    `${operator.name.title} ${operator.name.first} ${operator.name.last}`;
-
-  const columns: GridColDef<Operator>[] = [
-    {
-      field: 'fullName',
-      headerName: 'First Name',
-      flex: 1,
-      renderCell: ({ row }) => (
-        <Stack direction={'row'} alignItems="center" sx={{ height: 'inherit' }}>
-          <Avatar
-            alt={getOperatorName(row)}
-            src={row.picture.thumbnail}
-            sx={{ width: 40, height: 40, mr: 2 }}
-          />
-          <Typography>{getOperatorName(row)}</Typography>
-        </Stack>
-      ),
-    },
-    {
-      field: 'cell',
-      headerName: 'Phone',
-      flex: 1,
-    },
-    {
-      field: 'location',
-      headerName: 'Location',
-      flex: 2,
-      valueGetter: (value, row) =>
-        `${row.location.city}, ${row.location.state}, ${row.location.country}`,
-    },
-  ];
+const RemixForm = () => {
+  const [role, setRole] = useState('');
+  const { Form, state } = useFetcher<typeof action>();
+  const isSubmitting = state !== 'idle';
 
   return (
-    <>
-      <Alert
-        severity="info"
-        variant="outlined"
-        sx={{ mb: 2, borderRadius: '12px', bgcolor: 'background.paper' }}
-      >
-        {`Data here is fetched server-side via real public API`}
-      </Alert>
+    <Stack direction="row" justifyContent="center">
+      <Form autoComplete="off" method="post">
+        <Stack gap={2}>
+          <Box sx={{ width: '500px' }}>
+            <InputLabel required htmlFor="fullName">
+              Full Name
+            </InputLabel>
+            <TextField fullWidth required id="fullName" name="fullName" />
+          </Box>
 
-      <DataGrid
-        rows={operators || []}
-        columns={columns}
-        loading={isLoading}
-        getRowId={() => uuidv4()}
-        disableRowSelectionOnClick
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 10,
-            },
-          },
-        }}
-        pageSizeOptions={[5]}
-      />
-    </>
+          <Box sx={{ width: '500px' }}>
+            <InputLabel required htmlFor="lastName">
+              Last Name
+            </InputLabel>
+            <Select
+              fullWidth
+              required
+              id="lastName"
+              name="lastName"
+              onChange={(e: SelectChangeEvent<string>) =>
+                setRole(e.target.value)
+              }
+              value={role}
+            >
+              {ROLES.map((role) => (
+                <MenuItem key={role.id} value={role.id}>
+                  <Typography variant="body2">{role.label}</Typography>
+                </MenuItem>
+              ))}
+            </Select>
+          </Box>
+
+          <input name="secretKey" type="hidden" value={uuidv4()} />
+          <input name="role" type="hidden" value={role} />
+
+          <LoadingButton
+            fullWidth
+            loading={isSubmitting}
+            sx={{ mt: 2 }}
+            type="submit"
+            variant="contained"
+          >
+            Submit
+          </LoadingButton>
+        </Stack>
+      </Form>
+    </Stack>
   );
-}
+};
+
+export default RemixForm;
