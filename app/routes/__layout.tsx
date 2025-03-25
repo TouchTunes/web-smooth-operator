@@ -131,7 +131,7 @@ function Layout() {
           },
         }}
       >
-        <List sx={{ mt: 6 }}>
+        <List sx={{ mt: 5 }}>
           {PAGES.map((page, index) => (
             <ListItem key={page.value} disablePadding>
               <ListItemButton

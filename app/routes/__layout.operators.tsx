@@ -1,6 +1,6 @@
 import { Alert, Avatar, Stack, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import { useFetcher, useLoaderData } from '@remix-run/react';
+import { useLoaderData } from '@remix-run/react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { getOperators } from '~/src/services/operators.service';
@@ -25,8 +25,6 @@ export async function loader() {
 
 export default function Operators() {
   const { operators } = useLoaderData<typeof loader>();
-  const { state } = useFetcher<typeof loader>();
-  const isLoading = state !== 'idle';
   const getOperatorName = (operator: Operator) =>
     `${operator.name.title} ${operator.name.first} ${operator.name.last}`;
 
@@ -73,7 +71,6 @@ export default function Operators() {
       <DataGrid
         rows={operators || []}
         columns={columns}
-        loading={isLoading}
         getRowId={() => uuidv4()}
         disableRowSelectionOnClick
         initialState={{
