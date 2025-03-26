@@ -26,7 +26,11 @@ export default function ClientAuth0Provider({
       clientId="aYmWlr6lBk2wMUkKNWm19nKAEeF47bWZ"
       authorizationParams={{
         redirect_uri: 'http://localhost:5173/api/auth0callback',
+        audience: 'https://dev--d6f2kxp.us.auth0.com/api/v2/',
+        scope: 'openid profile email offline_access',
       }}
+      cacheLocation="localstorage"
+      useRefreshTokens
     >
       {children}
     </Auth0Provider>
