@@ -1,4 +1,3 @@
-import { Auth0Provider } from '@auth0/auth0-react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import {
   Links,
@@ -8,6 +7,7 @@ import {
   ScrollRestoration,
 } from '@remix-run/react';
 
+import ClientAuth0Provider from './Auth0Provider';
 import theme from './theme';
 
 import type { LinksFunction } from '@remix-run/node';
@@ -38,15 +38,9 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Auth0Provider
-        domain="dev--d6f2kxp.us.auth0.com"
-        clientId="aYmWlr6lBk2wMUkKNWm19nKAEeF47bWZ"
-        authorizationParams={{
-          redirect_uri: 'http://localhost:5173/api/auth0callback',
-        }}
-      >
+      <ClientAuth0Provider>
         <Outlet />
-      </Auth0Provider>
+      </ClientAuth0Provider>
     </ThemeProvider>
   );
 }

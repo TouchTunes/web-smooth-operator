@@ -24,7 +24,7 @@ import {
   Typography,
 } from '@mui/material';
 import { Link, Outlet } from '@remix-run/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import type { MetaFunction } from '@remix-run/react';
 
@@ -66,12 +66,25 @@ function Layout() {
     isLoading: isAuthLoading,
     logout,
   } = useAuth0();
-  console.log(isAuthenticated);
-  console.log(user);
 
   const toggleDrawer = () => {
     setIsDrawerOpen((previousState) => !previousState);
   };
+
+  useEffect(() => {
+    console.log('isAuthLoading');
+    console.log(isAuthLoading);
+  }, [isAuthLoading]);
+
+  useEffect(() => {
+    console.log('isAuthenticated');
+    console.log(isAuthenticated);
+  }, [isAuthLoading]);
+
+  useEffect(() => {
+    console.log('user');
+    console.log(user);
+  }, [isAuthLoading]);
 
   return (
     <Box sx={{ display: 'flex' }}>
