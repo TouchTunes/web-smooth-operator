@@ -38,9 +38,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export default function Operators() {
-  const { operators } = useLoaderData<typeof loader>();
+  const { operators: initialOperators } = useLoaderData<typeof loader>();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setSearchParams] = useSearchParams();
+  const [operators, setOperators] = useState(initialOperators);
   const [operatorsQuantity, setOperatorsQuantity] = useState('');
   const [debouncedQuantity] = useDebounce(operatorsQuantity, 500);
 
@@ -92,7 +93,13 @@ export default function Operators() {
 
   useEffect(() => {
     // Once debounced value is ready, update the search params
+    setOperators(initialOperators);
+  }, [initialOperators]);
+
+  useEffect(() => {
+    // Once debounced value is ready, update the search params
     if (debouncedQuantity) {
+      setOperators(null);
       setSearchParams({ quantity: debouncedQuantity });
     }
   }, [debouncedQuantity, setSearchParams]);
