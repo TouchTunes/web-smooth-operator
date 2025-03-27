@@ -46,18 +46,12 @@ const PAGES = [
   },
   {
     value: 2,
-    icon: <BackupTableIcon />,
-    url: '/remix-form',
-    name: 'Form Submission',
-  },
-  {
-    value: 3,
     icon: <ErrorOutlineIcon />,
     url: '/error-boundary',
     name: 'Error Boundary',
   },
   {
-    value: 4,
+    value: 3,
     icon: <LocalFireDepartmentIcon />,
     url: '/firebase',
     name: 'Firebase',
