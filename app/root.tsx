@@ -36,11 +36,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <ClientAuth0Provider>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <ClientAuth0Provider>
         <Outlet />
-      </ThemeProvider>
-    </ClientAuth0Provider>
+      </ClientAuth0Provider>
+    </ThemeProvider>
   );
 }
