@@ -1,6 +1,7 @@
-import { Alert, Button, Stack } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Alert, Button, IconButton, Stack } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import { useLoaderData } from '@remix-run/react';
+import { useFetcher, useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -17,6 +18,16 @@ export const action = routeAction;
 export default function Operators() {
   const { operators } = useLoaderData<typeof routeLoader>();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const { state, submit } = useFetcher<typeof routeAction>();
+
+  const deleteOperator = (operatorId: string) => {
+    submit(
+      { intent: 'delete-operator', operatorId },
+      {
+        method: 'POST',
+      },
+    );
+  };
 
   const columns: GridColDef<FirebaseOperator>[] = [
     {
@@ -38,6 +49,20 @@ export default function Operators() {
       field: 'location',
       headerName: 'Location',
       flex: 2,
+    },
+    {
+      field: 'actions',
+      headerName: '',
+      flex: 0.5,
+      renderCell: ({ row }) => (
+        <IconButton
+          aria-label="delete"
+          size="small"
+          onClick={() => deleteOperator(row.id)}
+        >
+          <DeleteIcon fontSize="small" />
+        </IconButton>
+      ),
     },
   ];
 
@@ -61,6 +86,7 @@ export default function Operators() {
       <DataGrid
         rows={operators || []}
         columns={columns}
+        loading={state !== 'idle'}
         getRowId={() => uuidv4()}
         disableRowSelectionOnClick
         initialState={{

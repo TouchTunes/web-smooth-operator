@@ -65,11 +65,6 @@ function Layout() {
   };
 
   useEffect(() => {
-    console.log('isAuthLoading');
-    console.log(isAuthLoading);
-  }, [isAuthLoading]);
-
-  useEffect(() => {
     console.log('isAuthenticated');
     console.log(isAuthenticated);
   }, [isAuthLoading]);

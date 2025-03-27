@@ -24,20 +24,32 @@ export async function loader() {
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
-  const { fullName, phone, role, location, intent } =
+  const { fullName, phone, role, location, intent, operatorId } =
     Object.fromEntries(formData);
 
-  const newOperator: Omit<FirebaseOperator, 'id'> = {
-    fullName: fullName.toString(),
-    phone: phone.toString(),
-    location: location.toString(),
-    role: role.toString(),
-  };
+  console.log(intent);
+  console.log(operatorId);
 
   switch (intent) {
     case 'add-operator':
       try {
+        const newOperator: Omit<FirebaseOperator, 'id'> = {
+          fullName: fullName.toString(),
+          phone: phone.toString(),
+          location: location.toString(),
+          role: role.toString(),
+        };
         await dbAdmin.collection('operators').add(newOperator);
+        return { success: true, message: '' };
+      } catch (error) {
+        return { success: false, message: error };
+      }
+    case 'delete-operator':
+      try {
+        await dbAdmin
+          .collection('operators')
+          .doc(operatorId.toString())
+          .delete();
         return { success: true, message: '' };
       } catch (error) {
         return { success: false, message: error };
