@@ -8,6 +8,7 @@ import { dbAdmin } from '~/firebaseAdmin';
 import AddOperatorModal from '~/src/components/AddOperatorModal';
 
 import type { GridColDef } from '@mui/x-data-grid';
+import type { ActionFunctionArgs } from '@remix-run/node';
 
 interface FirebaseOperator {
   fullName: string;
@@ -29,8 +30,24 @@ export async function loader() {
   };
 }
 
-export async function action() {
-  return null;
+export async function action({ request }: ActionFunctionArgs) {
+  const formData = await request.formData();
+  const { fullName, phone, role, location } = Object.fromEntries(formData);
+
+  const newOperator: Omit<FirebaseOperator, 'id'> = {
+    fullName: fullName.toString(),
+    phone: phone.toString(),
+    location: location.toString(),
+    role: role.toString(),
+  };
+
+  try {
+    await dbAdmin.collection('operators').add(newOperator);
+    return { success: true, message: '' };
+  } catch (error) {
+    console.log(error);
+    return { success: false, message: error };
+  }
 }
 
 export default function Operators() {

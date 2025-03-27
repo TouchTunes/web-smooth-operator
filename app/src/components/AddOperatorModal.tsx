@@ -13,17 +13,12 @@ import {
   Typography,
 } from '@mui/material';
 import { useFetcher } from '@remix-run/react';
-import { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import { useEffect, useState } from 'react';
 
 import type { SelectChangeEvent } from '@mui/material';
 import type { action as routeAction } from '~/routes/__layout.firebase';
 
-const ROLES = [
-  { id: uuidv4(), label: 'Administrator' },
-  { id: uuidv4(), label: 'Reader' },
-  { id: uuidv4(), label: 'Creator' },
-];
+const ROLES = ['Administrator', 'Reader', 'Creator'];
 
 interface AddOperatorModalProps {
   isModalOpen: boolean;
@@ -37,6 +32,12 @@ export default function AddOperatorModal({
   const { Form, state, data } = useFetcher<typeof routeAction>();
   const [role, setRole] = useState('');
   const isSubmitting = state !== 'idle';
+
+  useEffect(() => {
+    if (data?.success) {
+      handleClose();
+    }
+  }, [data]);
 
   return (
     <Dialog open={isModalOpen} onClose={handleClose}>
@@ -66,8 +67,8 @@ export default function AddOperatorModal({
                 value={role}
               >
                 {ROLES.map((role) => (
-                  <MenuItem key={role.id} value={role.id}>
-                    <Typography variant="body2">{role.label}</Typography>
+                  <MenuItem key={role} value={role}>
+                    <Typography variant="body2">{role}</Typography>
                   </MenuItem>
                 ))}
               </Select>
