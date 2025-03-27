@@ -4,6 +4,7 @@ import AssessmentIcon from '@mui/icons-material/Assessment';
 import BackupTableIcon from '@mui/icons-material/BackupTable';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
   AppBar,
@@ -54,6 +55,12 @@ const PAGES = [
     icon: <ErrorOutlineIcon />,
     url: '/error-boundary',
     name: 'Error Boundary',
+  },
+  {
+    value: 4,
+    icon: <LocalFireDepartmentIcon />,
+    url: '/firebase',
+    name: 'Firebase',
   },
 ];
 

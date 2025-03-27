@@ -24,7 +24,7 @@ export interface Operator {
 }
 
 const getOperators = async (): Promise<Operator[]> => {
-  const response = await axios.get('https://randomuser.me/api/?results=100');
+  const response = await axios.get('https://randomuser.me/api/?results=5000');
   const { data } = response;
   return data.results;
 };
