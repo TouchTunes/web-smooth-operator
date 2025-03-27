@@ -89,7 +89,17 @@ export default function AddOperatorModal({
           <Button onClick={handleClose}>Close</Button>
           <LoadingButton
             loading={isSubmitting}
+            name="intent"
             type="submit"
+            value="add-operator-error"
+          >
+            EB
+          </LoadingButton>
+          <LoadingButton
+            loading={isSubmitting}
+            name="intent"
+            type="submit"
+            value="add-operator"
             variant="contained"
           >
             Add

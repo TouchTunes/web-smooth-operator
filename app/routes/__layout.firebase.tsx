@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { dbAdmin } from '~/firebaseAdmin';
 import AddOperatorModal from '~/src/components/AddOperatorModal';
+import ErrorBoundaryComponent from '~/src/components/ErrorBoundaryBase';
 
 import type { GridColDef } from '@mui/x-data-grid';
 import type { ActionFunctionArgs } from '@remix-run/node';
@@ -32,7 +33,8 @@ export async function loader() {
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
-  const { fullName, phone, role, location } = Object.fromEntries(formData);
+  const { fullName, phone, role, location, intent } =
+    Object.fromEntries(formData);
 
   const newOperator: Omit<FirebaseOperator, 'id'> = {
     fullName: fullName.toString(),
@@ -41,13 +43,32 @@ export async function action({ request }: ActionFunctionArgs) {
     role: role.toString(),
   };
 
-  try {
-    await dbAdmin.collection('operators').add(newOperator);
-    return { success: true, message: '' };
-  } catch (error) {
-    console.log(error);
-    return { success: false, message: error };
+  switch (intent) {
+    case 'add-operator':
+      try {
+        await dbAdmin.collection('operators').add(newOperator);
+        return { success: true, message: '' };
+      } catch (error) {
+        return { success: false, message: error };
+      }
+    case 'add-operator-error':
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          reject(new Error(''));
+        }, 1000);
+      }).then(() => {
+        return {
+          success: false,
+          error: null,
+        };
+      });
+    default:
+      return null;
   }
+}
+
+export function ErrorBoundary() {
+  return <ErrorBoundaryComponent />;
 }
 
 export default function Operators() {
