@@ -75,12 +75,12 @@ export default function AddOperatorModal({
 
             <>
               <InputLabel htmlFor="phone">Phone</InputLabel>
-              <TextField fullWidth required id="phone" name="phone" />
+              <TextField fullWidth id="phone" name="phone" />
             </>
 
             <>
               <InputLabel htmlFor="location">Location</InputLabel>
-              <TextField fullWidth required id="location" name="location" />
+              <TextField fullWidth id="location" name="location" />
             </>
           </Stack>
         </DialogContent>
