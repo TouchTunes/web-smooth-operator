@@ -8,7 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import { useLoaderData, useNavigate, useRevalidator } from '@remix-run/react';
+import { useLoaderData, useSearchParams } from '@remix-run/react';
 import { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import { v4 as uuidv4 } from 'uuid';
@@ -39,12 +39,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export default function Operators() {
   const { operators } = useLoaderData<typeof loader>();
-  const { revalidate, state: revalidatorState } = useRevalidator();
-  const navigate = useNavigate();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, setSearchParams] = useSearchParams();
+  const [operatorsQuantity, setOperatorsQuantity] = useState('');
+  const [debouncedQuantity] = useDebounce(operatorsQuantity, 500);
+
   const getOperatorName = (operator: Operator) =>
     `${operator.name.title} ${operator.name.first} ${operator.name.last}`;
-  const [operatorsQuantity, setOperatorsQuantity] = useState('');
-  const [debouncedValue] = useDebounce(operatorsQuantity, 500);
 
   const columns: GridColDef<Operator>[] = [
     {
@@ -76,21 +77,6 @@ export default function Operators() {
     },
   ];
 
-  const updateQueryParams = () => {
-    if (debouncedValue) {
-      const url = new URL(window.location.href);
-      url.searchParams.set('quantity', debouncedValue);
-      navigate(url.pathname + url.search, { replace: true });
-    }
-  };
-
-  useEffect(() => {
-    if (debouncedValue) {
-      updateQueryParams();
-      revalidate();
-    }
-  }, [debouncedValue]);
-
   const handleQuantityChange = (nextQuantity: string) => {
     if (nextQuantity === '') {
       setOperatorsQuantity('');
@@ -103,6 +89,13 @@ export default function Operators() {
 
     setOperatorsQuantity(nextQuantity);
   };
+
+  useEffect(() => {
+    // Once debounced value is ready, update the search params
+    if (debouncedQuantity) {
+      setSearchParams({ quantity: debouncedQuantity });
+    }
+  }, [debouncedQuantity, setSearchParams]);
 
   return (
     <Stack gap={2}>
@@ -130,7 +123,7 @@ export default function Operators() {
       <DataGrid
         rows={operators || []}
         columns={columns}
-        loading={revalidatorState !== 'idle'}
+        loading={operators === null}
         getRowId={() => uuidv4()}
         disableRowSelectionOnClick
         initialState={{
