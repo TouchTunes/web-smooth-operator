@@ -36,3 +36,6 @@ export default function ClientAuth0Provider({
     </Auth0Provider>
   );
 }
+
+// https://remix.run/resources/remix-auth-auth0-strategy
+// This is probably the way to go but as of now I failed to set it up properly.
