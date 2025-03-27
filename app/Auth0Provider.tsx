@@ -22,15 +22,11 @@ export default function ClientAuth0Provider({
 
   return (
     <Auth0Provider
-      domain="dev--d6f2kxp.us.auth0.com"
-      clientId="aYmWlr6lBk2wMUkKNWm19nKAEeF47bWZ"
+      domain={process.env.AUTH0_DOMAIN || ''}
+      clientId={process.env.AUTH0_CLIENT_ID || ''}
       authorizationParams={{
         redirect_uri: 'http://localhost:5173/api/auth0callback',
-        audience: 'https://dev--d6f2kxp.us.auth0.com/api/v2/',
-        scope: 'openid profile email offline_access',
       }}
-      cacheLocation="localstorage"
-      useRefreshTokens
     >
       {children}
     </Auth0Provider>
