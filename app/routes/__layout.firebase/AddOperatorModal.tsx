@@ -23,11 +23,13 @@ const ROLES = ['Administrator', 'Reader', 'Creator'];
 interface AddOperatorModalProps {
   isModalOpen: boolean;
   handleClose: () => void;
+  setIsOperatorAdding: (isAdding: boolean) => void;
 }
 
 export default function AddOperatorModal({
   isModalOpen,
   handleClose,
+  setIsOperatorAdding,
 }: AddOperatorModalProps) {
   const { Form, state, data } = useFetcher<typeof routeAction>();
   const [role, setRole] = useState('');
@@ -38,6 +40,10 @@ export default function AddOperatorModal({
       handleClose();
     }
   }, [data]);
+
+  useEffect(() => {
+    setIsOperatorAdding(isSubmitting);
+  }, [isSubmitting]);
 
   return (
     <Dialog open={isModalOpen} onClose={handleClose}>

@@ -18,10 +18,13 @@ export const action = routeAction;
 export default function Operators() {
   const { operators } = useLoaderData<typeof routeLoader>();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const { state, submit } = useFetcher<typeof routeAction>();
+  const [isAdding, setIsOperatorAdding] = useState(false);
+  const { state: deleteActionState, submit: deleteActionSubmit } =
+    useFetcher<typeof routeAction>();
+  const isLoading = deleteActionState !== 'idle' || isAdding;
 
   const deleteOperator = (operatorId: string) => {
-    submit(
+    deleteActionSubmit(
       { intent: 'delete-operator', operatorId },
       {
         method: 'POST',
@@ -53,7 +56,9 @@ export default function Operators() {
     {
       field: 'actions',
       headerName: '',
-      flex: 0.5,
+      flex: 0.1,
+      disableReorder: true,
+      sortable: false,
       renderCell: ({ row }) => (
         <IconButton
           aria-label="delete"
@@ -86,7 +91,7 @@ export default function Operators() {
       <DataGrid
         rows={operators || []}
         columns={columns}
-        loading={state !== 'idle'}
+        loading={isLoading}
         getRowId={() => uuidv4()}
         disableRowSelectionOnClick
         initialState={{
@@ -102,6 +107,7 @@ export default function Operators() {
       <AddOperatorModal
         isModalOpen={isAddModalOpen}
         handleClose={() => setIsAddModalOpen((previousState) => !previousState)}
+        setIsOperatorAdding={setIsOperatorAdding}
       />
     </Stack>
   );
