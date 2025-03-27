@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { action as routeAction, loader as routeLoader } from './route.server';
 import AddOperatorModal from '~/routes/__layout.firebase/AddOperatorModal';
+import ErrorBoundaryComponent from '~/src/components/ErrorBoundaryBase';
 
 import type { FirebaseOperator } from './route.server';
 import type { GridColDef } from '@mui/x-data-grid';
@@ -78,4 +79,8 @@ export default function Operators() {
       />
     </Stack>
   );
+}
+
+export function ErrorBoundary() {
+  return <ErrorBoundaryComponent />;
 }
