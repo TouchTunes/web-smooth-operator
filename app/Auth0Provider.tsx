@@ -22,8 +22,8 @@ export default function ClientAuth0Provider({
 
   return (
     <Auth0Provider
-      domain={import.meta.env.AUTH0_DOMAIN}
-      clientId={import.meta.env.AUTH0_CLIENT_ID}
+      domain="dev--d6f2kxp.us.auth0.com"
+      clientId="aYmWlr6lBk2wMUkKNWm19nKAEeF47bWZ"
       authorizationParams={{
         redirect_uri: 'http://localhost:5173/api/auth0callback',
       }}
