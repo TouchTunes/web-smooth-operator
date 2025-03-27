@@ -13,32 +13,15 @@ import { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import { v4 as uuidv4 } from 'uuid';
 
-import { getOperators } from '~/src/services/operators.service';
+import { loader as routeLoader } from './route.server';
 
 import type { GridColDef } from '@mui/x-data-grid';
-import type { LoaderFunctionArgs } from '@remix-run/node';
 import type { Operator } from '~/src/services/operators.service';
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  const { searchParams } = new URL(request.url);
-  const quantity = searchParams.get('quantity') || '10';
-
-  try {
-    const operators = await getOperators({ quantity });
-    return {
-      operators,
-      error: null,
-    };
-  } catch (error: unknown) {
-    return {
-      operators: null,
-      error,
-    };
-  }
-}
+export const loader = routeLoader;
 
 export default function Operators() {
-  const { operators: initialOperators } = useLoaderData<typeof loader>();
+  const { operators: initialOperators } = useLoaderData<typeof routeLoader>();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setSearchParams] = useSearchParams();
   const [operators, setOperators] = useState(initialOperators);
