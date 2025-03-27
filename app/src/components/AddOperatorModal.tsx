@@ -1,0 +1,100 @@
+import LoadingButton from '@mui/lab/LoadingButton';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
+import { useFetcher } from '@remix-run/react';
+import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+
+import type { SelectChangeEvent } from '@mui/material';
+import type { action as routeAction } from '~/routes/__layout.firebase';
+
+const ROLES = [
+  { id: uuidv4(), label: 'Administrator' },
+  { id: uuidv4(), label: 'Reader' },
+  { id: uuidv4(), label: 'Creator' },
+];
+
+interface AddOperatorModalProps {
+  isModalOpen: boolean;
+  handleClose: () => void;
+}
+
+export default function AddOperatorModal({
+  isModalOpen,
+  handleClose,
+}: AddOperatorModalProps) {
+  const { Form, state, data } = useFetcher<typeof routeAction>();
+  const [role, setRole] = useState('');
+  const isSubmitting = state !== 'idle';
+
+  return (
+    <Dialog open={isModalOpen} onClose={handleClose}>
+      <Form autoComplete="off" method="post">
+        <DialogTitle>{'Add New Smooth Operator'}</DialogTitle>
+        <DialogContent>
+          <Stack gap={2} sx={{ width: '500px' }}>
+            <>
+              <InputLabel required htmlFor="fullName">
+                Full Name
+              </InputLabel>
+              <TextField fullWidth required id="fullName" name="fullName" />
+            </>
+
+            <>
+              <InputLabel required htmlFor="lastName">
+                Role
+              </InputLabel>
+              <Select
+                fullWidth
+                required
+                id="role"
+                name="role"
+                onChange={(e: SelectChangeEvent<string>) =>
+                  setRole(e.target.value)
+                }
+                value={role}
+              >
+                {ROLES.map((role) => (
+                  <MenuItem key={role.id} value={role.id}>
+                    <Typography variant="body2">{role.label}</Typography>
+                  </MenuItem>
+                ))}
+              </Select>
+            </>
+
+            <>
+              <InputLabel htmlFor="phone">Phone</InputLabel>
+              <TextField fullWidth required id="phone" name="phone" />
+            </>
+
+            <>
+              <InputLabel htmlFor="location">Location</InputLabel>
+              <TextField fullWidth required id="location" name="location" />
+            </>
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Close</Button>
+          <LoadingButton
+            loading={isSubmitting}
+            type="submit"
+            variant="contained"
+          >
+            Add
+          </LoadingButton>
+        </DialogActions>
+      </Form>
+    </Dialog>
+  );
+}
