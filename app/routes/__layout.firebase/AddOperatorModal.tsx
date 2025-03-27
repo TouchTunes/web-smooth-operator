@@ -15,8 +15,8 @@ import {
 import { useFetcher } from '@remix-run/react';
 import { useEffect, useState } from 'react';
 
+import type { action as routeAction } from './route.server';
 import type { SelectChangeEvent } from '@mui/material';
-import type { action as routeAction } from '~/routes/__layout.firebase';
 
 const ROLES = ['Administrator', 'Reader', 'Creator'];
 
