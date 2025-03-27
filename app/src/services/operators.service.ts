@@ -23,8 +23,14 @@ export interface Operator {
   picture: OperatorAvatar;
 }
 
-const getOperators = async (): Promise<Operator[]> => {
-  const response = await axios.get('https://randomuser.me/api/?results=5000');
+const getOperators = async ({
+  quantity,
+}: {
+  quantity: string;
+}): Promise<Operator[]> => {
+  const response = await axios.get(
+    `https://randomuser.me/api/?results=${quantity}`,
+  );
   const { data } = response;
   return data.results;
 };
