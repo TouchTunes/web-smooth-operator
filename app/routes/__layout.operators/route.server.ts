@@ -4,7 +4,7 @@ import type { LoaderFunctionArgs } from '@remix-run/node';
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const { searchParams } = new URL(request.url);
-  const quantity = searchParams.get('quantity') || '10';
+  const quantity = searchParams.get('quantity') || '1000';
 
   try {
     const operators = await getOperators({ quantity });

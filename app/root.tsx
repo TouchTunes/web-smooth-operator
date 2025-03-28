@@ -5,7 +5,9 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useNavigation,
 } from '@remix-run/react';
+import { useEffect, useState } from 'react';
 
 import ClientAuth0Provider from './Auth0Provider';
 import theme from './theme';
@@ -35,6 +37,27 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  const navigation = useNavigation();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setIsLoading(false);
+
+    if (navigation.state === 'loading') {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  }, [navigation.state]);
+
+  useEffect(() => {
+    if (isLoading) {
+      document.title = 'Loading...';
+    } else {
+      document.title = 'Smooth Operator';
+    }
+  }, [isLoading]);
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
