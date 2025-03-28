@@ -27,9 +27,6 @@ export async function action({ request }: ActionFunctionArgs) {
   const { fullName, phone, role, location, intent, operatorId } =
     Object.fromEntries(formData);
 
-  console.log(intent);
-  console.log(operatorId);
-
   switch (intent) {
     case 'add-operator':
       try {
